@@ -215,7 +215,8 @@ $("sn").onchange=fl;
 $("sc").onchange=()=>{cb=1;sFill()};$("st").onchange=()=>{cb=1;sFill()};$("sk").onchange=()=>{sFill()};
 $("sa").onclick=()=>{const b=inp().filter(x=>!x.dataset.r),all=b.every(x=>x.checked);b.forEach(x=>x.checked=!all)};
 async function call(body){const{data,error}=await db.functions.invoke("generate",{body});if(error){let m=error.message;try{m=(await error.context.json()).error||m}catch(e){}return{err:m}}return{data}}
-const base=()=>({cls:cl(),term:tm(),kind:kd(),nobj:+$("sn").value,tf:cl()<=6?(+$("stf").value||0):0,topics:inp().filter(x=>x.checked).map(x=>x.dataset.t),extra:$("sx").value.trim(),format:gF()});
+const SR="MARKING SCHEME LAYOUT (this overrides any earlier style for the marking scheme). After the line === MARKING SCHEME === write: (1) the objective key, one per line, exactly like '1. B' (use '26. T' or '26. F' for True or False items). (2) Then, for EVERY written question in the paper, including questions candidates may not choose, a line 'QUESTION n' using the same numbering as the paper. (3) Under it, for each part a line that starts with the part label, for example '(a)' or '(a) (i)', followed by the question restated in a short form. (4) Under each part list the acceptable answers, one per line, each starting with '- '. For a definition or explanation write one plain sentence, and add a line starting 'OR' when another wording is acceptable. (5) After each part write one line with that part's marks, for example '[4 marks @ 2 marks each]' when several points earn equal marks, or '[3 marks]'. Marks must match the question paper exactly. Do not write headings such as PAPER 1, SECTION A or MARKING SCHEME inside the scheme.";
+const base=()=>({rules:SR,cls:cl(),term:tm(),kind:kd(),nobj:+$("sn").value,tf:cl()<=6?(+$("stf").value||0):0,topics:inp().filter(x=>x.checked).map(x=>x.dataset.t),extra:$("sx").value.trim(),format:gF()});
 $("gen").onclick=async()=>{const g=$("sg"),b=base();if(!b.topics.length&&!b.extra){g.textContent="Tick the weeks you taught, or type the topics.";return}
  g.textContent="Writing your paper… this can take up to a minute. Please keep this page open.";$("gen").disabled=true;
  const r=await call({...b,level:$("sl").value,mode:"generate"});$("gen").disabled=false;if(r.err){g.textContent=r.err;return}
@@ -243,7 +244,7 @@ function exBuild(D,o){
  const stamp=d.toLocaleString("en-GB",{day:"numeric",month:"short",year:"numeric",hour:"2-digit",minute:"2-digit",hour12:false});
  const ay=(d.getMonth()>=8?YR+"/"+String(YR+1).slice(2):(YR-1)+"/"+String(YR).slice(2));
  const tot=(F.marks_per_objective||1)*m.nobj+(F.paper2_section_a_marks||0)+(F.paper2_section_b_questions?(F.paper2_section_b_answer||F.paper2_section_b_questions)*F.paper2_section_b_marks_each:0)+(F.critical_thinking_questions||0)*(F.critical_thinking_marks_each||0);
- const R=(t,x={})=>new TextRun({text:t,font:FONT,bold:x.b,italics:x.i,size:x.sz||22,color:x.c});
+ const R=(t,x={})=>new TextRun({text:t,font:FONT,bold:x.b,italics:x.i,size:x.sz||22,color:x.c,underline:x.u?{type:D.UnderlineType.SINGLE}:undefined});
  const P=(t,x={})=>new Paragraph({children:Array.isArray(t)?t:[R(t,x)],alignment:x.al,spacing:{before:x.bf||0,after:x.af==null?80:x.af},indent:x.ind?{left:x.ind}:undefined,keepNext:x.kn,pageBreakBefore:x.pb,border:x.bd,tabStops:x.ts});
  const NB={style:BorderStyle.NONE,size:0,color:"FFFFFF"},NOB={top:NB,bottom:NB,left:NB,right:NB};
  const BX={style:BorderStyle.SINGLE,size:6,color:"000000"},BOXB={top:BX,bottom:BX,left:BX,right:BX};
@@ -308,7 +309,31 @@ function exBuild(D,o){
   if(key.length)flush();return out}
  const MS="=== MARKING SCHEME ===",k=m.text.indexOf(MS),paper=k>0?m.text.slice(0,k):m.text,scheme=k>0?m.text.slice(k+MS.length):"";
  const ans=!low&&(m.kind==="term"||mock);
- const kids=o.which==="scheme"?[P("COMPUTING – BASIC "+m.cls+" · "+(mock?"BASIC EDUCATION CERTIFICATE MOCK EXAMINATION":F.title+(m.kind==="term"||m.kind==="mid"?" – TERM "+TW:""))+" · MARKING SCHEME",{b:true,sz:26,al:AL.CENTER,af:200}),...body(scheme||"No marking scheme found.",false,false)]:[...cover(),...body(paper,ans,true)];
+ const tw=["","FIRST","SECOND","THIRD"][m.term]||"",NW=["","ONE","TWO","THREE","FOUR","FIVE","SIX","SEVEN"];
+ function schemeKids(){
+  const GR="17694F",GL="BFD8C9",l2=mock?F.title+" ("+MY+")":m.kind==="term"?"END OF "+tw+" TERM EXAMINATION ("+MY+")":F.title+" – "+tw+" TERM ("+MY+")";
+  const out=[P("EXAMIFY-GH",{b:true,sz:56,al:AL.CENTER,c:GR,af:20}),P(l2,{b:true,sz:28,al:AL.CENTER,af:20}),P("COMPUTING – BASIC "+m.cls,{b:true,sz:28,al:AL.CENTER,af:60}),
+   new Table({rows:[new TableRow({height:{value:150,rule:D.HeightRule.EXACT},children:[C([P("",{af:0,sz:4})],{w:5300,b:NOB,fill:GR}),C([P("",{af:0,sz:4})],{w:4566,b:NOB,fill:GL})]})],width:{size:W,type:WidthType.DXA},columnWidths:[5300,4566]}),
+   P("FINAL MARKING SCHEME",{b:true,i:true,sz:26,al:AL.CENTER,bf:120,af:60})];
+  const hd=(a)=>a.forEach((t,n)=>out.push(P(t,{b:true,al:AL.CENTER,af:n===a.length-1?100:0,kn:true})));
+  const written=!!(F.paper2_section_a_marks||F.paper2_section_b_questions),om=nobj=>nobj*(F.marks_per_objective||1);
+  hd(written?[low?"SECTION A":"PAPER 1","OBJECTIVE TEST","["+om(m.nobj)+" MARKS]"]:["OBJECTIVE TEST","["+om(m.nobj)+" MARKS]"]);
+  const L=scheme.replace(/\r/g,"").replace(/\*\*/g,"").split("\n"),km={},rest=[];
+  for(const ln of L){const t=ln.trim(),x=t.match(/^\(?(\d{1,2})[\.\)]\s*([A-DTF]|True|False)$/i);if(x){if(!km[x[1]])km[x[1]]=x[2].charAt(0).toUpperCase()}else rest.push(t)}
+  const n=m.nobj,cols=5,rows=Math.ceil(n/cols),cw=Math.floor(W/cols);
+  out.push(new Table({rows:Array.from({length:rows},(_,r)=>new TableRow({children:Array.from({length:cols},(_,c)=>{const q=c*rows+r+1;return C([P(q<=n?q+". "+(km[q]||""):"",{sz:24,af:0})],{w:cw})})})),width:{size:cw*cols,type:WidthType.DXA},columnWidths:Array(cols).fill(cw)}));
+  if(written){const pm=(F.paper2_section_a_marks||0)+(F.paper2_section_b_questions?(F.paper2_section_b_answer||F.paper2_section_b_questions)*F.paper2_section_b_marks_each:0),ba=F.paper2_section_b_answer||F.paper2_section_b_questions||0,cnt=(!low&&F.paper2_section_a_marks?1:0)+ba;
+   out.push(P("",{af:60}));hd([low?"SECTION B":"PAPER 2","["+pm+" MARKS]"]);
+   out.push(P("STRICT INSTRUCTIONS FOR COMPLIANCE",{b:true,i:true,bf:60,af:40}));
+   out.push(P("Candidates are expected to answer ONLY "+NW[cnt]+" questions in all"+(!low&&F.paper2_section_a_marks?", including QUESTION 1":"")+". Any candidate who contravenes this instruction will have only the first "+NW[cnt].toLowerCase()+" answers marked, leaving those in excess unmarked.",{i:true,af:100}))}
+  for(const s0 of rest){const t=s0.trim();if(!t||/^=+/.test(t)||(isHead(t)&&/^(PAPER|SECTION|MARKING SCHEME|OBJECTIVE)/.test(t)))continue;
+   if(/^QUESTION\s*\d+/i.test(t)){out.push(P(t.toUpperCase(),{b:true,sz:24,bf:200,af:60,kn:true}));continue}
+   if(/^(\([a-z]{1,4}\)\s*)+/i.test(t)){out.push(new Paragraph({children:[R(t,{b:true,u:true})],spacing:{before:100,after:50},keepNext:true}));continue}
+   if(/^\[[^\]]*marks?[^\]]*\]$/i.test(t)){out.push(P(t,{b:true,al:AL.RIGHT,af:100}));continue}
+   const bl=t.match(/^[-•▪■]\s+(.*)$/);if(bl){out.push(new Paragraph({children:[R("▪  "+bl[1])],indent:{left:720,hanging:360},spacing:{after:20}}));continue}
+   out.push(P(t,{ind:360,af:40}))}
+  return out}
+ const kids=o.which==="scheme"?schemeKids():[...cover(),...body(paper,ans,true)];
  const ft=new Footer({children:[new Paragraph({tabStops:[{type:TabStopType.CENTER,position:W/2},{type:TabStopType.RIGHT,position:W}],border:{top:{style:BorderStyle.SINGLE,size:4,color:"888888",space:4}},children:[new TextRun({children:["Examify GH · Computing – Basic "+m.cls+(o.which==="scheme"?" · Marking scheme":""),new Tab(),"Page ",PageNumber.CURRENT," of ",PageNumber.TOTAL_PAGES,new Tab(),"Generated "+stamp],font:FONT,size:16,color:"555555"})]})]});
  return new Document({creator:"Examify GH",title:"Examify GH Computing Basic "+m.cls,styles:{default:{document:{run:{font:FONT,size:22}}}},sections:[{properties:{page:{size:{width:11906,height:16838},margin:{top:1020,right:1020,bottom:1100,left:1020,footer:500}}},footers:{default:ft},children:kids}]});
 }
