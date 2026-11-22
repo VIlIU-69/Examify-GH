@@ -6,7 +6,7 @@
 :root{--bg:#f6f8fa;--card:#fff;--ink:#202b32;--mut:#7b848c;--line:#e9edef;--pri:#17694f;--on:#fff;--soft:#eaf4ef;--acc:#d9b34a;--deep:#123f31;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0d1320;--card:#151e30;--ink:#e9eef9;--mut:#98a4bc;--line:#27334c;--pri:#2fbf8a;--on:#06281c;--soft:#12302a}}
 :root[data-theme="dark"]{--bg:#0d1320;--card:#151e30;--ink:#e9eef9;--mut:#98a4bc;--line:#27334c;--pri:#2fbf8a;--on:#06281c;--soft:#12302a}
-html{scroll-padding-top:env(safe-area-inset-top,0px)}
+html{color-scheme:light dark;scroll-padding-top:env(safe-area-inset-top,0px)}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 "DM Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
 .wrap{max-width:860px;margin:0 auto;padding:16px}
@@ -198,26 +198,100 @@ body{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
 .signup-profile .f{grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:8px}
 .signup-profile input,.signup-profile select,.profile-form input,.profile-form select{width:100%;padding:10px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);font:inherit}
 .signup-profile label,.profile-form label{display:block;font-size:.8rem;color:var(--mut);margin-bottom:3px}
-.admin-promo{display:flex;flex-direction:column;align-items:flex-start;gap:8px}
-.admin-promo .go{width:auto;padding:8px 0;background:none;color:#fff;text-align:left}
+.admin-promo{position:relative;isolation:isolate;display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,.7fr);align-items:center;min-height:340px;margin:22px 0 24px;padding:clamp(28px,5vw,48px);overflow:hidden;border:1px solid rgba(180,232,204,.16);border-radius:30px;background:linear-gradient(115deg,#064b35 0%,#06432f 58%,#053c2c 100%);color:#fff}
+.admin-promo::before,.admin-promo::after{position:absolute;z-index:-1;content:"";border:1px solid rgba(113,200,158,.2);border-radius:50%;pointer-events:none}
+.admin-promo::before{width:470px;height:470px;right:-110px;top:-210px;box-shadow:0 0 0 38px rgba(113,200,158,.035),0 0 0 82px rgba(113,200,158,.03)}
+.admin-promo::after{width:330px;height:330px;right:-88px;bottom:-180px;border-color:rgba(113,200,158,.14)}
+.admin-promo-content{position:relative;z-index:2;max-width:680px}
+.admin-promo-label{display:flex;align-items:center;gap:12px;margin:0 0 24px;color:#e5f4eb;font-size:.76rem;font-weight:650;letter-spacing:.2em}
+.admin-promo-label::before{width:11px;height:11px;flex:none;border-radius:50%;background:#f4c252;box-shadow:0 0 14px rgba(244,194,82,.35);content:""}
+.admin-promo h2{display:block;max-width:690px;margin:0;color:#fff;font-size:clamp(2rem,4vw,3.35rem);font-weight:750;line-height:1.13;letter-spacing:-.045em}
+.admin-promo-sparkle{display:inline-block;width:.78em;height:.78em;margin-left:.08em;vertical-align:-.03em;color:#f4c252}
+.admin-promo-description{max-width:590px;margin:20px 0 26px;color:#c5e0d1;font-size:clamp(1rem,1.8vw,1.25rem);line-height:1.55}
+.admin-promo .admin-promo-cta{display:inline-flex;align-items:center;gap:18px;width:auto;min-height:48px;padding:5px 0;border:0;border-radius:8px;background:transparent;color:#fff;font-family:inherit;font-size:1.15rem;font-weight:650;line-height:1.3;cursor:pointer}
+.admin-promo-cta svg{width:32px;height:32px;transition:transform .2s ease}
+.admin-promo-cta:hover svg{transform:translateX(5px)}
+.admin-promo-cta:focus-visible{outline:3px solid #f4c252;outline-offset:5px}
+.admin-promo-art{position:absolute;z-index:1;top:50%;right:clamp(22px,6vw,76px);width:min(31%,290px);height:300px;transform:translateY(-50%);pointer-events:none}
+.admin-promo-paper{position:absolute;inset:23px 4px 14px 22px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;border:1px solid rgba(255,255,255,.44);border-radius:14px;background:linear-gradient(145deg,rgba(218,255,234,.62),rgba(163,218,188,.34));box-shadow:0 18px 45px rgba(0,19,12,.17);color:#064b35;backdrop-filter:blur(2px)}
+.admin-promo-paper-back{inset:48px 20px -2px 3px;transform:rotate(-11deg);opacity:.62}
+.admin-promo-paper-front{transform:rotate(12deg)}
+.admin-promo-cap{width:44px;height:34px;margin-bottom:4px}
+.admin-promo-paper b{font:800 .95rem Manrope,sans-serif;letter-spacing:.17em}
+.admin-promo-paper small{font-size:.52rem;font-weight:700;letter-spacing:.14em}
+.admin-promo-paper-lines{display:grid;gap:9px;width:70%;margin-top:5px}
+.admin-promo-paper-lines i{height:5px;border-radius:99px;background:rgba(6,75,53,.22)}
+.admin-promo-paper-lines i:nth-child(2){width:86%}
+.admin-promo-paper-lines i:nth-child(3){width:70%}
+@media(max-width:700px){.admin-promo{grid-template-columns:minmax(0,1fr);min-height:0;padding:clamp(24px,6vw,36px);border-radius:24px}.admin-promo-content{max-width:560px}.admin-promo-label{margin-bottom:20px;font-size:.68rem}.admin-promo h2{max-width:560px;font-size:clamp(2rem,7vw,2.8rem)}.admin-promo-description{max-width:480px;margin:16px 0 22px}.admin-promo-art{right:-84px;width:220px;height:250px;opacity:.22}.admin-promo-paper{inset:22px 8px 16px 20px}.admin-promo-paper-back{inset:40px 18px 0 0}}
+@media(max-width:420px){.admin-promo{padding:24px 20px}.admin-promo-label{max-width:210px;line-height:1.5;letter-spacing:.16em}.admin-promo h2{max-width:330px;font-size:2rem}.admin-promo-description{max-width:300px;font-size:1rem}.admin-promo .admin-promo-cta{gap:12px;font-size:1.05rem}.admin-promo-art{right:-118px;opacity:.15}}
+@media(min-width:701px) and (max-width:960px){.admin-promo{grid-template-columns:minmax(0,1fr)}.admin-promo-content{max-width:620px}.admin-promo-art{right:-72px;width:220px;opacity:.16}}
+@media(prefers-reduced-motion:reduce){.admin-promo-cta svg{transition:none}}
+/* Teacher workspace welcome */
+#v-home .wrap{max-width:1200px}
+.home-hero{position:relative;isolation:isolate;overflow:hidden;padding:clamp(22px,4vw,42px);border:1px solid rgba(111,245,153,.65);border-radius:30px;background:radial-gradient(ellipse at 78% 12%,rgba(83,235,126,.38),transparent 34%),radial-gradient(ellipse at 100% 65%,rgba(19,166,91,.38),transparent 38%),linear-gradient(132deg,#003c2d 0%,#005338 55%,#075d3e 100%);box-shadow:0 24px 60px rgba(0,40,25,.22);color:#f7fff9}
+.home-hero::before,.home-hero::after{position:absolute;z-index:-1;content:"";pointer-events:none}
+.home-hero::before{width:440px;height:440px;right:-170px;top:-185px;border:1px solid rgba(123,255,160,.2);border-radius:50%;box-shadow:0 0 0 34px rgba(123,255,160,.035),0 0 0 72px rgba(123,255,160,.025)}
+.home-hero::after{left:10px;bottom:8px;width:130px;height:72px;background:radial-gradient(circle,rgba(49,221,111,.42) 1.8px,transparent 2.2px) 0 0/14px 14px;opacity:.7}
+.home-hero-top{position:relative;min-height:370px}
+.home-hero-copy{position:relative;z-index:2;max-width:57%}
+.home-brand{display:flex;align-items:center;gap:15px;color:#fff;font-size:1.35rem;font-weight:650;letter-spacing:-.02em}
+.home-brand-mark{display:block;width:62px;height:69px;object-fit:contain}
+.home-welcome{margin-top:35px}
+.home-welcome h1{margin:0;color:#fff;font:800 clamp(2.5rem,5vw,4.1rem)/1.04 Manrope,"DM Sans",sans-serif;letter-spacing:-.055em}
+.home-welcome .home-accent{color:#69f58e}
+.home-welcome p{max-width:510px;margin:18px 0 0;color:#e7f7ed;font-size:clamp(1.08rem,2vw,1.4rem);line-height:1.35}
+.home-hero-art{position:absolute;z-index:1;top:-12px;right:-8px;width:min(50%,450px);margin:0;pointer-events:none}
+.home-hero-teacher{display:block;width:100%;height:auto;object-fit:contain;filter:drop-shadow(0 16px 25px rgba(0,24,16,.22))}
+.home-info-card{position:relative;z-index:3;display:grid;grid-template-columns:64px 1px minmax(0,1fr) 142px;grid-template-areas:"shield divider copy paper";gap:22px;align-items:center;min-height:184px;padding:22px 24px;border:1px solid rgba(139,255,177,.72);border-radius:24px;background:rgba(4,103,61,.76);box-shadow:0 16px 38px rgba(0,31,20,.23),inset 0 1px rgba(255,255,255,.12);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+.home-info-shield{grid-area:shield;width:64px;height:72px}
+.home-info-divider{grid-area:divider;align-self:stretch;width:1px;background:rgba(76,248,134,.8)}
+.home-info-copy{grid-area:copy;min-width:0}
+.home-info-label{margin:0 0 6px;color:#74f698;font-size:.86rem;font-weight:750;letter-spacing:.12em}
+.home-info-copy h2{margin:0 0 8px;color:#fff;font-size:clamp(1.3rem,2.5vw,1.9rem);font-weight:700;line-height:1.2;letter-spacing:-.025em}
+.home-info-copy>p:last-child{margin:0;color:#e8f7ed;font-size:clamp(.94rem,1.5vw,1.08rem);line-height:1.52}
+.home-paper-art{position:relative;grid-area:paper;justify-self:center;width:138px;height:132px}
+.home-paper-sheet{position:absolute;top:14px;left:34px;width:76px;height:98px;border:1px solid rgba(35,157,166,.18);border-radius:9px;background:#d9f5ee;box-shadow:0 8px 18px rgba(0,32,28,.2);transform:rotate(-11deg)}
+.home-paper-sheet.front{top:6px;left:48px;background:#f4fffc;transform:rotate(9deg)}
+.home-paper-lines{position:absolute;top:28px;left:62px;display:grid;gap:8px;width:44px;transform:rotate(9deg)}
+.home-paper-lines i{height:5px;border-radius:99px;background:#8bcbd0}
+.home-paper-lines i:nth-child(2){width:85%}.home-paper-lines i:nth-child(3){width:70%}.home-paper-lines i:nth-child(4){width:92%}
+.home-paper-check{position:absolute;right:3px;bottom:7px;display:grid;width:44px;height:44px;place-items:center;border:3px solid rgba(238,255,246,.92);border-radius:50%;background:#20c768;color:#fff;box-shadow:0 5px 13px rgba(0,44,28,.28)}
+.home-paper-check svg{width:25px;height:25px}
+.home-create-wrap{display:flex;justify-content:center;margin-top:22px}
+.home-create.go{display:inline-flex;align-items:center;justify-content:center;gap:14px;width:min(100%,420px);min-height:68px;padding:12px 26px;border:1px solid rgba(220,255,229,.75);border-radius:999px;background:linear-gradient(110deg,#5cf58a,#8cff9d);color:#06452a;font-family:inherit;font-size:1.22rem;font-weight:750;box-shadow:0 12px 30px rgba(0,23,15,.3),inset 0 1px rgba(255,255,255,.65);transition:transform .18s ease,filter .18s ease,box-shadow .18s ease}
+.home-create.go svg{width:23px;height:23px;flex:none}
+.home-create.go:hover:not(:disabled){filter:brightness(1.05);transform:translateY(-2px);box-shadow:0 16px 34px rgba(0,23,15,.35),inset 0 1px rgba(255,255,255,.65)}
+.home-create.go:active:not(:disabled){transform:translateY(0) scale(.99)}
+.home-create.go:focus-visible{outline:3px solid #fff;outline-offset:4px}
+@media(min-width:900px) and (max-width:1100px){.home-hero-top{min-height:340px}.home-hero-copy{max-width:59%}.home-hero-art{width:min(47%,390px)}.home-welcome h1{font-size:clamp(2.35rem,4.2vw,3.25rem)}.home-info-card{grid-template-columns:54px 1px minmax(0,1fr) 116px;gap:16px}.home-info-shield{width:54px;height:62px}.home-paper-art{transform:scale(.88)}}
+@media(max-width:760px){.home-hero{padding:clamp(20px,5vw,30px);border-radius:24px}.home-hero-top{display:flex;min-height:0;flex-direction:column}.home-hero-copy{max-width:none}.home-brand{gap:12px;font-size:1.18rem}.home-brand-mark{width:52px;height:58px}.home-welcome{margin-top:24px}.home-welcome h1{font-size:clamp(2.35rem,8vw,3.4rem)}.home-welcome p{margin-top:12px}.home-hero-art{position:relative;top:auto;right:auto;width:min(100%,390px);margin:-2px auto -10px}.home-info-card{grid-template-columns:46px 1px minmax(0,1fr);grid-template-areas:"shield divider copy" "paper paper paper";gap:14px;padding:18px}.home-info-shield{width:46px;height:52px}.home-info-copy h2{font-size:clamp(1.2rem,4vw,1.55rem)}.home-info-copy>p:last-child{font-size:.96rem}.home-paper-art{width:112px;height:98px;transform:scale(.82);transform-origin:top right}.home-create-wrap{margin-top:18px}.home-create.go{min-height:62px;font-size:1.08rem}}
+@media(max-width:420px){.home-welcome h1{font-size:clamp(2.25rem,10vw,2.65rem)}.home-welcome .home-accent{display:block}.home-info-card{gap:12px;padding:16px}.home-info-copy>p:last-child{font-size:.92rem}.home-create.go{gap:10px;padding:10px 18px}}
+@media(prefers-reduced-motion:reduce){.home-create.go{transition:none}}
 .directory-tools{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.email-suggestion{margin-top:8px}
+.email-suggestion p{margin:0}
+.email-suggestion .row{margin-top:8px}
+.email-suggestion .pill{font-size:.84rem;padding:6px 12px}
 .directory-tabs{display:flex;gap:6px;flex-wrap:wrap;margin:16px 0 10px}
 .directory-search{max-width:520px;margin-bottom:12px}
 .directory-search input{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);font:inherit}
-.directory-scroll{overflow-x:auto}
-.directory-table-head,.directory-row{display:grid;grid-template-columns:minmax(180px,1.45fr) minmax(170px,1.25fr) minmax(90px,.7fr) minmax(90px,.65fr) minmax(130px,1fr);gap:12px;align-items:center}
-.directory-table-head{padding:10px 8px;color:var(--mut);font-size:.8rem;border-bottom:1px solid var(--line)}
-.directory-user{border-bottom:1px solid var(--line);min-width:720px}
+.directory-scroll{max-width:100%;overflow-x:auto;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}
+.directory-scroll:focus-visible{outline:2px solid var(--pri);outline-offset:2px}
+.directory-scroll-hint{display:none}
+.directory-table-head,.directory-row{display:grid;grid-template-columns:minmax(150px,1.1fr) minmax(210px,1.35fr) minmax(165px,1.1fr) minmax(140px,.95fr) minmax(90px,.65fr) minmax(80px,.55fr) minmax(120px,.85fr);gap:12px;align-items:center;min-width:1080px}
+.directory-table-head{padding:10px 8px;color:var(--mut);font-size:.8rem;border-bottom:1px solid var(--line);font-weight:600}
+.directory-user{border-bottom:1px solid var(--line);min-width:1080px}
 .directory-row{padding:12px 8px;cursor:pointer;list-style:none}.directory-row::marker{content:""}
 .directory-row::-webkit-details-marker{display:none}
-.directory-name{font-weight:650}.directory-email,.directory-sub{display:block;color:var(--mut);font-size:.82rem;overflow-wrap:anywhere}
+.directory-name{font-weight:650;overflow-wrap:anywhere}.directory-email,.directory-sub{display:block;color:var(--mut);font-size:.82rem;overflow-wrap:anywhere}
 .directory-badge{display:inline-flex;align-items:center;border-radius:99px;background:var(--soft);color:var(--pri);padding:4px 9px;font-size:.8rem}
 .directory-badge.inactive{background:var(--bg);color:var(--mut)}
 .directory-expanded{padding:0 8px 12px 20px;color:var(--mut);font-size:.85rem}
 .directory-error{color:#b42318}
 .directory-pagination{display:flex;justify-content:space-between;align-items:center;gap:10px;padding-top:12px}
 .directory-pagination .row{align-items:center}
-@media(max-width:700px){.directory-table-head{display:none}.directory-user{min-width:0}.directory-row{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px}.directory-row>span:nth-child(2){text-align:right}.directory-row>span:nth-child(n+3){font-size:.82rem}}
+@media(max-width:700px){.directory-scroll-hint{display:block;margin:8px 0}.directory-table-head,.directory-row{gap:10px}}
 </style><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.min.js"></script></head>
 <body>
 <div id="wel" class="wel">
@@ -254,6 +328,7 @@ body{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
 <label class="chk" id="tcw" hidden><input type="checkbox" id="tc"><span>I agree to the <a href="#terms" target="_blank" rel="noopener">Terms and Conditions</a> and have read the <a href="#privacy" target="_blank" rel="noopener">Privacy Policy</a>.</span></label>
 <label class="chk" id="nlw" hidden><input type="checkbox" id="nl"><span>Send me tips and updates from Examify GH (optional). You can unsubscribe at any time.</span></label>
 <div class="note" id="amsg" role="status" style="color:#b42318"></div>
+<div class="note email-suggestion" id="email-suggestion" role="status" hidden><p id="email-suggestion-message"></p><div class="row"><button type="button" class="pill" id="email-use-suggestion">Use suggested email</button><button type="button" class="pill" id="email-keep-address">Keep this address</button></div></div>
 <button class="go" id="enter">Sign in →</button>
 <div id="sps" hidden>If an account exists for this email, we’ve sent a reset link. <b>It may be in your Spam or Junk folder.</b> If you find it there, tap “Not spam”, then open the link.</div>
 <button type="button" class="lnk" id="bkl" hidden style="margin-top:10px">← Back to sign in</button>
@@ -270,9 +345,25 @@ body{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
 <div class="sn"><i data-lucide="sparkles"></i><b>A little less busywork.</b>A little more time for the moments that make teaching matter.<div style="margin-top:10px;font-size:.72rem;color:#919c96">Made for Ghana. Built for impact.</div></div>
 <p class="cr" style="padding:0 12px;text-align:left"><a href="#privacy" target="_blank" rel="noopener">Privacy</a> · <a href="#terms" target="_blank" rel="noopener">Terms</a></p><button class="nv" id="leave" style="margin-top:10px"><i data-lucide="log-out"></i>Sign out</button><div class="me"><i class="av" id="av">EA</i><div><b id="mn">Educator</b><span id="mr">Teacher</span></div></div></aside>
 <div class="main"><header class="top"><button id="mb" aria-label="Menu"><i data-lucide="menu"></i></button><span>Teacher workspace</span><span>›</span><b id="crumb" style="color:var(--ink)">My workspace</b></header>
-<section id="v-home" class="view"><div class="wrap"><div class="hd"><div><p class="eye">More time for what matters</p><h1 class="h1" id="hi">Hello, educator<i>.</i></h1><p class="mut">A fresh start for your next great Computing lesson.</p></div><button class="go" data-go="studio"><i data-lucide="plus"></i>Create an exam</button></div>
+<section id="v-home" class="view"><div class="wrap home-wrap">
+<div class="home-hero">
+ <div class="home-hero-top">
+  <div class="home-hero-copy">
+   <div class="home-brand"><img class="home-brand-mark" src="./assets/examify-e-mark.png" alt="Examify logo"><span>Exam Studio</span></div>
+   <div class="home-welcome"><h1 id="hi">Hello, <span class="home-accent">educator.</span></h1><p>A fresh start for your next great Computing lesson.</p></div>
+  </div>
+  <figure class="home-hero-art"><img class="home-hero-teacher" src="./assets/examify-educator.png" alt="Friendly Ghanaian educator wearing a blue learning-themed outfit and holding an Examify-branded book"></figure>
+ </div>
+ <div class="home-info-card">
+  <svg class="home-info-shield" viewBox="0 0 64 72" fill="none" aria-hidden="true"><path d="M32 3 57 13v19c0 17-11 29-25 37C18 61 7 49 7 32V13L32 3Z" fill="#6bf597"/><path d="m20 36 8 8 17-19" stroke="#075037" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <span class="home-info-divider" aria-hidden="true"></span>
+  <div class="home-info-copy"><p class="home-info-label">EXAM STUDIO</p><h2>Your expertise. A little extra support.</h2><p>Pick a class, term and the weeks you taught, and get a draft paper with a marking scheme in about a minute. Review and edit it, then save.</p></div>
+  <div class="home-paper-art" aria-hidden="true"><div class="home-paper-sheet"></div><div class="home-paper-sheet front"></div><span class="home-paper-lines"><i></i><i></i><i></i><i></i></span><span class="home-paper-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 4 4L19 6"/></svg></span></div>
+ </div>
+ <div class="home-create-wrap"><button class="go home-create" type="button" data-go="studio" aria-label="Create an exam and open Exam Studio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg><span>Create an exam</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></button></div>
+</div>
 <div class="card" id="profile-reminder" hidden><h2>Complete your educator profile</h2><p class="mut">Add your name, institution and location so your admin profile is up to date.</p><button class="pill" id="profile-open">Complete profile</button></div>
-<div class="dk" style="margin-top:16px"><p class="eye" style="color:var(--acc)">Exam studio</p><h2>Your expertise. A little extra support.</h2><p>Pick a class, term and the weeks you taught, and get a draft paper with a marking scheme in about a minute. Review and edit it, then save.</p></div></div></section>
+</div></section>
 <section id="v-studio" class="view" hidden><div class="wrap"><p class="eye">Your exam studio</p><h1 class="h1">Create an exam<i>.</i></h1>
 <div class="card"><div class="f"><div><label>Class</label><select id="sc"><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option></select></div><div><label>Term</label><select id="st"><option>1</option><option>2</option><option>3</option></select></div><div><label>Exam type</label><select id="sk"><option value="cat">CAT</option><option value="mid">Mid-term</option><option value="term">End of term</option><option value="mock">Basic 9 BECE mock</option></select></div><div><label>Objective items</label><select id="sn"></select></div><div id="stfw" hidden><label>True/False statements</label><select id="stf"></select></div><div><label>Difficulty</label><select id="sl"><option>Easier</option><option selected>Mixed</option><option>Harder</option></select></div></div><p class="mut" id="sf" style="margin-top:10px"></p></div>
 <div class="card"><h2>Weeks you taught</h2><p class="note" id="s3" hidden></p><div class="row" id="sp" style="margin:0 0 8px"></div><div id="sw"></div><button class="pill" id="sa" style="margin-top:8px">Tick all</button><label class="mut" style="display:block;margin:12px 0 4px">Other topics taught (optional)</label><textarea id="sx" rows="2" style="width:100%;padding:10px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);font:inherit"></textarea><p class="mut" style="font-size:.82rem;margin:6px 0 0">Do not type names or personal details. Text you enter here is sent to Google’s Gemini AI to write your paper.</p></div>
@@ -284,14 +375,26 @@ body{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
 <p class="note" id="xmsg" role="status"></p><button class="go" id="xs">Save paper</button></div>
 <div class="card" id="lib"></div><div class="card paper" id="paper" hidden></div></div></section>
 <section id="v-admin" class="view" hidden><div class="wrap">
-<div id="admin-overview"><p class="eye">Your platform, at a glance</p><h1 class="h1">Overview<i>.</i></h1><p class="mut">Live figures from signed-up teachers.</p><div id="adm"></div>
-<div class="dk admin-promo"><p class="eye" style="color:var(--acc)">The educator community</p><h2>Great exams start with empowered teachers.</h2><p>A clearer view of your community. A stronger future for education in Ghana.</p><button class="go" id="admin-explore">Explore your users&nbsp; →</button></div></div>
+<div id="admin-overview"><p class="eye">Your platform, at a glance</p><h1 class="h1">Overview<i>.</i></h1><p class="mut">Live figures from signed-up teachers.</p>
+<section class="dk admin-promo" aria-labelledby="admin-promo-title">
+ <div class="admin-promo-content">
+  <p class="admin-promo-label">THE COMPUTING EXAM STUDIO</p>
+  <h2 id="admin-promo-title">Great exams start with empowered teachers.<svg class="admin-promo-sparkle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.5 14.8 9.2 21.5 12l-6.7 2.8L12 21.5l-2.8-6.7L2.5 12l6.7-2.8L12 2.5Z"/></svg></h2>
+  <p class="admin-promo-description">A clearer view of your community. A stronger future for education in Ghana.</p>
+  <button class="go admin-promo-cta" id="admin-explore" type="button" aria-controls="admin-users">Explore your users<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></button>
+ </div>
+ <div class="admin-promo-art" aria-hidden="true"><div class="admin-promo-paper admin-promo-paper-back"></div><div class="admin-promo-paper admin-promo-paper-front">
+  <svg class="admin-promo-cap" viewBox="0 0 48 36" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m3 12 21-9 21 9-21 9L3 12Z"/><path d="M12 16v9c7 5 17 5 24 0v-9"/><path d="M45 12v13"/></svg>
+  <b>EXAMIFY</b><small>COMPUTING EXAMS</small><span class="admin-promo-paper-lines"><i></i><i></i><i></i></span>
+ </div></div>
+</section>
+<div id="adm"></div></div>
 <div id="admin-users" hidden><button class="pill" id="admin-back">← Overview</button><p class="eye" style="margin-top:18px">Your platform, at a glance</p><h1 class="h1">Your users<i>.</i></h1><p class="mut">Get to know the educators building better exams with you.</p>
 <div class="card" style="margin-top:18px"><div class="directory-tools"><div><h2>User directory <span class="tag" id="directory-count">0</span></h2><p class="mut">Successful-generation counts are tracked from rollout onward.</p></div><button class="pill" id="directory-export">↓ Export users</button></div>
 <div class="directory-tabs" role="group" aria-label="Filter users by activity"><button class="pill" data-user-filter="all" aria-pressed="true">All users</button><button class="pill" data-user-filter="active" aria-pressed="false">Active</button><button class="pill" data-user-filter="inactive" aria-pressed="false">Inactive</button></div>
 <div class="directory-search"><input type="search" id="directory-search" placeholder="Search name, email, school, or location" aria-label="Search users"></div>
 <p class="note directory-error" id="directory-message" role="status" hidden></p>
-<div class="directory-scroll"><div class="directory-table-head"><span>User</span><span>School / Institution</span><span>Status</span><span>Exams</span><span>Last active</span></div><div id="directory-rows"></div></div>
+<p class="mut directory-scroll-hint">Swipe or scroll horizontally to see all columns.</p><div class="directory-scroll" role="region" aria-label="User directory. Scroll horizontally to view all columns." tabindex="0"><div class="directory-table-head"><span>Name</span><span>Email</span><span>School / Institution</span><span>Country / region</span><span>Status</span><span>Exams</span><span>Last active</span></div><div id="directory-rows"></div></div>
 <p class="mut" id="directory-empty" hidden>No users match this search.</p><div class="directory-pagination"><span class="mut" id="directory-page-label"></span><div class="row"><button class="pill" id="directory-prev" aria-label="Previous page">‹</button><span class="tag" id="directory-page">1</span><button class="pill" id="directory-next" aria-label="Next page">›</button></div></div></div></div>
 </div></section>
 </div></div>
@@ -308,7 +411,7 @@ body{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
 const SB_URL="https://fvwubovymnvotseoufkz.supabase.co",SB_KEY="sb_publishable_suF-mQyZh1nFUvmKrbCl6w_jagzMvpy";
 const $=i=>document.getElementById(i),db=supabase.createClient(SB_URL,SB_KEY);
 const h=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e};
-let me=null,up=false,mdl="in",cdT=null,lastSeenTimer=null,lastSeenAt=0,lastSeenBusy=false,directoryUsers=[],directoryFilter="all",directoryQuery="",directoryPage=1,recov=/type=recovery/.test(location.hash),expired=/error_code=otp_expired|error=access_denied/.test(location.hash);
+let me=null,up=false,mdl="in",cdT=null,lastSeenTimer=null,lastSeenAt=0,lastSeenBusy=false,directoryUsers=[],directoryTutorLabels=new Map(),directoryFilter="all",directoryQuery="",directoryPage=1,recov=/type=recovery/.test(location.hash),expired=/error_code=otp_expired|error=access_denied/.test(location.hash);
 if(expired)history.replaceState(null,"",location.pathname);
 const sh=(i,v)=>{$(i).hidden=!v};
 function show(w){["wel","auth","rst","legal","app"].forEach(i=>sh(i,i===w));window.scrollTo(0,0);window.lucide&&lucide.createIcons()}
@@ -341,6 +444,13 @@ eyeSet($("e1"),false);eyeSet($("e2"),false);
 db.auth.onAuthStateChange(ev=>{if(ev==="PASSWORD_RECOVERY"){recov=true;show("rst")}});
 function cdown(n){const b=$("enter");b.disabled=true;clearInterval(cdT);const t=()=>{b.textContent=n>0?"Send again in "+n+"s":"Send the link again →";if(n<=0){b.disabled=false;clearInterval(cdT)}n--};t();cdT=setInterval(t,1000)}
 function validEmail(e){return e.length<=254&&/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(e)}
+const EMAIL_DOMAIN_SUGGESTIONS=new Map([["gmal.com","gmail.com"],["gmial.com","gmail.com"],["gmai.com","gmail.com"],["gamil.com","gmail.com"],["gmaill.com","gmail.com"]]);
+let suggestedEmailAddress=null,confirmedEmailAddress=null;
+function emailDomainSuggestion(email){const at=email.lastIndexOf("@");if(at<1)return null;const domain=EMAIL_DOMAIN_SUGGESTIONS.get(email.slice(at+1));return domain?email.slice(0,at+1)+domain:null}
+function showEmailSuggestion(suggestion){suggestedEmailAddress=suggestion;$("email-suggestion-message").textContent="This email domain may be a typo. Did you mean "+suggestion+"?";$("email-suggestion").hidden=false}
+$("em").addEventListener("input",()=>{confirmedEmailAddress=null;suggestedEmailAddress=null;$("email-suggestion").hidden=true});
+$("email-use-suggestion").onclick=()=>{if(!suggestedEmailAddress)return;$("em").value=suggestedEmailAddress;confirmedEmailAddress=null;suggestedEmailAddress=null;$("email-suggestion").hidden=true;$("amsg").style.color="var(--pri)";$("amsg").textContent="Check the suggested address, then continue.";$("em").focus()};
+$("email-keep-address").onclick=()=>{confirmedEmailAddress=$("em").value.trim().toLowerCase();$("email-suggestion").hidden=true;$("enter").click()};
 function syncRegionField(prefix){const isGhana=$(prefix+"country").value.trim().toLowerCase()==="ghana";sh(prefix+"region-wrap",isGhana);$(prefix+"region").required=isGhana;if(!isGhana)$(prefix+"region").value=""}
 function collectProfile(prefix){
  const values={
@@ -400,7 +510,8 @@ async function sendReset(e){const m=$("amsg"),b=$("enter");b.disabled=true;
  catch(err){r={error:err}}
  if(r.error){b.disabled=false;m.textContent=authError(r.error,"reset");return}
  sh("sps",true);cdown(60)}
-$("enter").onclick=async()=>{const e=$("em").value.trim().toLowerCase(),m=$("amsg");m.style.color="#b42318";m.textContent="";
+$("enter").onclick=async()=>{const e=$("em").value.trim().toLowerCase(),m=$("amsg");m.style.color="#b42318";m.textContent="";$("email-suggestion").hidden=true;
+ const suggestion=emailDomainSuggestion(e);if(suggestion&&confirmedEmailAddress!==e){showEmailSuggestion(suggestion);return}confirmedEmailAddress=null;suggestedEmailAddress=null;
  if(!validEmail(e)){m.textContent="Enter a valid email address.";return}
  if(mdl==="forgot"){await sendReset(e);return}
  const profile=up?collectProfile("su-"):null;if(profile&&profile.error){m.textContent=profile.error;return}
@@ -449,17 +560,17 @@ async function lib(){const L=$("lib");L.replaceChildren(h("h2",null,"Saved paper
   k.onclick=async()=>{if(confirm("Delete this paper?")){await db.from("exams").delete().eq("id",x.id);lib()}};r.append(d,o,k);L.append(r)})}
 async function adm(){const A=$("adm");A.replaceChildren();let s,error;try{({data:s,error}=await db.rpc("admin_stats"))}catch(err){console.error("Could not load admin statistics:",err);A.append(h("p","mut","Could not load admin statistics. Please try again."));return}if(error||!s){if(error)console.error("Could not load admin statistics:",error);A.append(h("p","mut","Could not load admin statistics. Please try again."));return}
  const g=h("div","kp");[["Teachers",s.teachers,"users"],["Active, last 30 days",s.active,"activity"],["Saved exams",s.exams,"file-text"]].forEach(([k,v,i])=>{const c=h("div","card"),l=h("div");l.append(h("div","mut",k),h("div","v",String(v)));const ic=h("span","ic"),e=document.createElement("i");e.dataset.lucide=i;ic.append(e);c.append(l,ic);g.append(c)});A.append(g);window.lucide&&lucide.createIcons()}
-async function loadAdminUsers(){const message=$("directory-message");directoryUsers=[];directoryPage=1;$("directory-count").textContent="0";message.textContent="Loading users…";message.hidden=false;$("directory-rows").replaceChildren();$("directory-empty").hidden=true;
+async function loadAdminUsers(){const message=$("directory-message");directoryUsers=[];directoryTutorLabels=new Map();directoryPage=1;$("directory-count").textContent="0";message.textContent="Loading users…";message.hidden=false;$("directory-rows").replaceChildren();$("directory-empty").hidden=true;
  let data,error;try{({data,error}=await db.rpc("admin_user_directory"))}catch(err){console.error("Could not load admin user directory:",err);message.textContent="Could not load the user directory. Please try again.";return}if(error||!Array.isArray(data)){if(error)console.error("Could not load admin user directory:",error);message.textContent="Could not load the user directory. Check that the latest database migration is applied, then try again.";return}
- message.textContent="";message.hidden=true;directoryUsers=data;renderUserDirectory()}
+ message.textContent="";message.hidden=true;directoryUsers=data;directoryTutorLabels=assignDirectoryTutorLabels(data);renderUserDirectory()}
 function isUserActive(user){const time=Date.parse(user.last_seen||"");return Number.isFinite(time)&&time<=Date.now()&&Date.now()-time<=30*24*60*60*1000}
 function formatLastSeen(value){const time=Date.parse(value||"");if(!Number.isFinite(time))return"Never";const elapsed=Math.max(0,Date.now()-time);if(elapsed<60*1000)return"Just now";if(elapsed<60*60*1000)return Math.floor(elapsed/60000)+" min ago";if(elapsed<24*60*60*1000)return Math.floor(elapsed/3600000)+" hr ago";if(elapsed<30*24*60*60*1000)return Math.floor(elapsed/86400000)+" days ago";return new Date(time).toLocaleDateString()}
+function assignDirectoryTutorLabels(users){const labels=new Map();let number=0;users.forEach(user=>{if((!user.role||user.role==="teacher")&&profileIncomplete(user))labels.set(user.id,"Tutor "+(++number))});return labels}
 function renderUserDirectory(){const rows=$("directory-rows");rows.replaceChildren();$("directory-count").textContent=String(directoryUsers.length);
  const filtered=directoryUsers.filter(user=>{const active=isUserActive(user),matchStatus=directoryFilter==="all"||(directoryFilter==="active"&&active)||(directoryFilter==="inactive"&&!active),text=[user.name,user.email,user.institution,user.country_of_origin,user.ghana_region].filter(Boolean).join(" ").toLowerCase();return matchStatus&&text.includes(directoryQuery)});
  const pages=Math.max(1,Math.ceil(filtered.length/10));directoryPage=Math.min(directoryPage,pages);const pageRows=filtered.slice((directoryPage-1)*10,directoryPage*10);
- pageRows.forEach(user=>{const details=h("details","directory-user"),summary=h("summary","directory-row"),who=h("span"),institution=h("span"),status=h("span","directory-badge"+(isUserActive(user)?"":" inactive"),isUserActive(user)?"Active":"Inactive");
- who.append(h("span","directory-name",user.name||"Profile incomplete"),h("span","directory-email",user.email||""));institution.append(h("span",null,user.institution||"Not provided"),h("span","directory-sub",[user.country_of_origin,user.ghana_region].filter(Boolean).join(" · ")||"Location not provided"));
- summary.append(who,institution,status,h("span",null,String(user.generated_exam_count||0)),h("span",null,formatLastSeen(user.last_seen)));const extra=h("div","directory-expanded","Joined "+(user.created_at?new Date(user.created_at).toLocaleDateString():"unknown")+" · "+(user.role||"teacher")+(user.newsletter?" · newsletter subscriber":""));
+ pageRows.forEach(user=>{const details=h("details","directory-user"),summary=h("summary","directory-row"),name=h("span","directory-name",directoryTutorLabels.get(user.id)||user.name||"Profile incomplete"),email=h("span","directory-email",user.email||"Not provided"),institution=h("span",null,user.institution||"Not provided"),location=h("span","directory-sub",[user.country_of_origin,user.ghana_region].filter(Boolean).join(" · ")||"Location not provided"),status=h("span","directory-badge"+(isUserActive(user)?"":" inactive"),isUserActive(user)?"Active":"Inactive");
+ summary.append(name,email,institution,location,status,h("span",null,String(user.generated_exam_count||0)),h("span",null,formatLastSeen(user.last_seen)));const extra=h("div","directory-expanded","Joined "+(user.created_at?new Date(user.created_at).toLocaleDateString():"unknown")+" · "+(user.role||"teacher")+(user.newsletter?" · newsletter subscriber":""));
  details.append(summary,extra);rows.append(details)});
  $("directory-empty").hidden=filtered.length>0;$("directory-page").textContent=String(directoryPage);$("directory-page-label").textContent=filtered.length?"Showing "+(filtered.length?((directoryPage-1)*10+1):0)+"–"+Math.min(directoryPage*10,filtered.length)+" of "+filtered.length+" matching users":"No matching users";$("directory-prev").disabled=directoryPage<=1;$("directory-next").disabled=directoryPage>=pages}
 function csvCell(value){const text=String(value==null?"":value),safe=/^[\s]*[=+\-@]/.test(text)?"'"+text:text;return'"'+safe.replace(/"/g,'""')+'"'}
